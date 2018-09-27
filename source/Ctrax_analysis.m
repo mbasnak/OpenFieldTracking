@@ -25,11 +25,14 @@ surface([trx.x;trx.x],[trx.y;trx.y],[z;z],[col;col],...
         'linew',2);
 title('Trajectory of the fly');
 xlabel('x coordinates (px)'); ylabel('y coordinates (px)');
+%add arena to it using the arena parameters saved in trx.arena
+hold on
+viscircles([trx.arena.x trx.arena.y],trx.arena.r)
 
 
 %% Display per frame statistics
 
-%compute_perframe_stats
+% compute_perframe_stats
 
 [FileName,PathName] = uigetfile('.mat')
 load(FileName) 
@@ -44,4 +47,20 @@ subplot(1,2,2)
 plot(trx.theta2wall,'r')
 title('Angle to closest point in arena wall');
 ylabel('Angle (rad)'); xlabel('Time');
+
+
+% overlaying both plots
+figure,
+x = linspace(0,length(trx.x),length(trx.x));
+yyaxis left
+plot(x,trx.dist2wall);
+ylabel('Distance to wall (mm)');
+ylim([-20, 45]);
+yyaxis right
+plot(x,trx.theta2wall);
+ylabel('Angle to wall (rad)');
+xlim([0, length(trx.x)]);
+
+
+
 
